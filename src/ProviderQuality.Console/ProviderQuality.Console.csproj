@@ -41,7 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Award.cs" />
+    <Compile Include="Models\AcmePartnerFacility.cs" />
+    <Compile Include="Models\Award.cs" />
+    <Compile Include="Models\BlueCompare.cs" />
+    <Compile Include="Models\BlueDistinctionPlus.cs" />
+    <Compile Include="Models\BlueFirst.cs" />
+    <Compile Include="Models\BlueStar.cs" />
+    <Compile Include="Models\GovQualityPlus.cs" />
+    <Compile Include="Models\Interface\IAward.cs" />
+    <Compile Include="Models\TopConnectedProviders.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

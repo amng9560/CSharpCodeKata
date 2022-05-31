@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ProviderQuality.Console.Models;
 
 namespace ProviderQuality.Console
 {
@@ -10,6 +11,9 @@ namespace ProviderQuality.Console
             set;
         }
 
+        // TODO: PLEASE READ THIS DISCLAIMER NOTE
+        // HUDE DISCLAIMER! I don't have Dotnet Framework 4.5 installed because I don't think it's wise to keep using a version that has reached the end of life.
+        // I tried my best to write logic that fit the criteria. If I were to refactor this I would update the version. It'd be best to update at the version that you're using to .Net Core 3.1 or .NET 6
         static void Main(string[] args)
         {
             System.Console.WriteLine("Updating award metrics...!");
@@ -18,17 +22,23 @@ namespace ProviderQuality.Console
             {
                 Awards = new List<Award>
                 {
-                    new Award {Name = "Gov Quality Plus", SellIn = 10, Quality = 20},
-                    new Award {Name = "Blue First", SellIn = 2, Quality = 0},
-                    new Award {Name = "ACME Partner Facility", SellIn = 5, Quality = 7},
-                    new Award {Name = "Blue Distinction Plus", SellIn = 0, Quality = 80},
-                    new Award {Name = "Blue Compare", SellIn = 15, Quality = 20},
-                    new Award {Name = "Top Connected Providres", SellIn = 3, Quality = 6}
+                    new GovQualityPlus (10, 20),
+                    new BlueStar (2, 0),
+                    new AcmePartnerFacility (5, 7),
+                    new BlueDistinctionPlus ( 0, 80),
+                    new BlueCompare (15, 20),
+                    new TopConnectedProviders (3, 6)
                 }
 
             };
 
             app.UpdateQuality();
+
+            foreach(var award in app.Awards)
+            {
+                System.Console.WriteLine($"Award:{award.Name}, Quality: {award.Quality}, Will Expire in {award.ExpiresIn} Days");
+                System.Console.WriteLine("----------");
+            }
 
             System.Console.ReadKey();
 
@@ -36,77 +46,9 @@ namespace ProviderQuality.Console
 
         public void UpdateQuality()
         {
-            for (var i = 0; i < Awards.Count; i++)
+            foreach(var award in Awards)
             {
-                if (Awards[i].Name != "Blue First" && Awards[i].Name != "Blue Compare")
-                {
-                    if (Awards[i].Quality > 0)
-                    {
-                        if (Awards[i].Name != "Blue Distinction Plus")
-                        {
-                            Awards[i].Quality = Awards[i].Quality - 1;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Awards[i].Quality < 50)
-                    {
-                        Awards[i].Quality = Awards[i].Quality + 1;
-
-                        if (Awards[i].Name == "Blue Compare")
-                        {
-                            if (Awards[i].SellIn < 11)
-                            {
-                                if (Awards[i].Quality < 50)
-                                {
-                                    Awards[i].Quality = Awards[i].Quality + 1;
-                                }
-                            }
-
-                            if (Awards[i].SellIn < 6)
-                            {
-                                if (Awards[i].Quality < 50)
-                                {
-                                    Awards[i].Quality = Awards[i].Quality + 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (Awards[i].Name != "Blue Distinction Plus")
-                {
-                    Awards[i].SellIn = Awards[i].SellIn - 1;
-                }
-
-                if (Awards[i].SellIn < 0)
-                {
-                    if (Awards[i].Name != "Blue First")
-                    {
-                        if (Awards[i].Name != "Blue Compare")
-                        {
-                            if (Awards[i].Quality > 0)
-                            {
-                                if (Awards[i].Name != "Blue Distinction Plus")
-                                {
-                                    Awards[i].Quality = Awards[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Awards[i].Quality = Awards[i].Quality - Awards[i].Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (Awards[i].Quality < 50)
-                        {
-                            Awards[i].Quality = Awards[i].Quality + 1;
-                        }
-                    }
-                }
+                award.ProcessQualityUpdate();
             }
         }
 
